@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+</head>
+<style>
+    body {
+        position: relative;
+        height: 100vh;
+        background: #34373C;
+        text-align: center;
+        box-sizing: border-box;
+        color:#FF9900;
+        font-family: system-ui,-apple-system,system-ui,"Helvetica 			Neue",Helvetica,Arial,sans-serif;
+	  font-size: 16px;
+    }
+
+    .LoaderBorder {
+        position: absolute;
+        top: 70%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 200px;
+        height: 20px;
+    }
+
+    .number {
+        position: absolute;
+        width: 80%;
+        overflow-wrap: break-word;
+        word-wrap: break-word;
+        hyphens: auto;
+        top: 40%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 3em;
+        font-weight: 600;
+    }
+
+    .innerLoader {
+        width: 0%;
+        height: 100%;
+        background: #0DCAEA;
+    }
+
+    input {
+        position: absolute;
+        top: 30%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 90%;
+        padding:15px;
+        font-weight: 600;
+        font-size:1em;
+    }
+
+    button {
+        position: absolute;
+        top: 60%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 50%;
+        
+	  background-color: #FF9900;
+	  border: 1px solid transparent;
+	  border-radius: .25rem;
+	  box-shadow: rgba(0, 0, 0, 0.02) 0 1px 3px 0;
+	  box-sizing: border-box;
+	  color: #fff;
+	  cursor: pointer;
+	  
+	  
+	  font-weight: 600;
+	  
+	  
+	  padding: 20px  calc(1.5rem - 1px);
+	  
+	  text-decoration: none;
+	  transition: all 250ms;
+	  user-select: none;
+	  -webkit-user-select: none;
+	  touch-action: manipulation;
+	  vertical-align: baseline;
+	  
+
+    }
+    button-5:active {
+  background-color: #c85000;
+  box-shadow: rgba(0, 0, 0, .06) 0 2px 4px;
+  transform: translateY(0);
+}
+</style>
+
+<body>
+    <div x-data="{
+        number:'',   
+        Newnumber : '',
+        k:0,
+        closeModal : false,
+        level:0,
+        empty:'',
+        message:'',
+        getrandomNum(){
+            tempnum = Math.floor(Math.random() * 10);
+            this.number += tempnum.toString()
+            return this.number
+            
+        },
+        GenerateLoadingScr(){
+            spinner = document.getElementsByClassName('innerLoader')[0]
+            inter = setInterval(() => {
+                this.k +=1
+                spinner.style.width = this.k +'%'
+                if(this.k >=100){
+                    clearInterval(inter)
+                    this.closeModal = true
+                }
+                
+            }, 50);
+        },
+        addNumber(){
+            
+            if(this.Newnumber == this.number){
+                this.k = 0
+                this.closeModal = false
+                this.level++
+                this.Newnumber = null
+                
+            }else{
+                alert('You got to level '+this.level)
+                location.reload(); 
+                
+                
+            }
+        },
+        
+        
+    }">
+
+        <template x-if="closeModal == false ? getrandomNum():''">
+            <div class="number" x-text="number"></div>
+        </template>
+        <template x-if="closeModal == false">
+            <div class="LoaderBorder" x-init="GenerateLoadingScr()">
+                <div class="innerLoader"></div>
+            </div>
+        </template>
+
+
+        <template x-if="closeModal == true">
+            <input id="input" type="text" x-model="Newnumber"  placeholder="Enter all numbers you saw">
+        </template>
+        <template x-if="closeModal == true">
+            <button @click="addNumber()">Add number</button>
+        </template>
+
+    </div>
+    <script>
+        
+
+    </script>
+</body>
+</html>
